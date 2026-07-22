@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://joaovitorcf97.github.io/solitaire-game/sitemap.xml
