@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://joaovitorcf97.github.io/solitaire-game/</loc>
+    <loc>https://joaovitorcf97.github.io/</loc>
   </url>
   <url>
-    <loc>https://joaovitorcf97.github.io/solitaire-game/privacy/</loc>
+    <loc>https://joaovitorcf97.github.io/solitaire/</loc>
   </url>
   <url>
-    <loc>https://joaovitorcf97.github.io/solitaire-game/support/</loc>
+    <loc>https://joaovitorcf97.github.io/solitaire/privacy/</loc>
+  </url>
+  <url>
+    <loc>https://joaovitorcf97.github.io/solitaire/support/</loc>
+  </url>
+  <url>
+    <loc>https://joaovitorcf97.github.io/number-merge/</loc>
+  </url>
+  <url>
+    <loc>https://joaovitorcf97.github.io/number-merge/privacy/</loc>
+  </url>
+  <url>
+    <loc>https://joaovitorcf97.github.io/number-merge/support/</loc>
   </url>
 </urlset>

@@ -1,15 +1,39 @@
 (function () {
   const supported = ["pt", "en"];
+  const storageKey = "superapps.lang";
+
+  const readStored = () => {
+    try {
+      return window.localStorage.getItem(storageKey);
+    } catch {
+      // Private mode or blocked storage: fall back to the URL/browser choice.
+      return null;
+    }
+  };
+
+  const writeStored = (language) => {
+    try {
+      window.localStorage.setItem(storageKey, language);
+    } catch {
+      /* nothing to do — the page still works, the choice just will not persist */
+    }
+  };
+
   const params = new URLSearchParams(window.location.search);
   const requested = params.get("lang");
+  const stored = readStored();
   const browserLanguage = (navigator.language || "en").toLowerCase();
+
+  // Explicit ?lang= wins, then a previous choice, then the browser.
   let current = supported.includes(requested)
     ? requested
-    : browserLanguage.startsWith("pt")
-      ? "pt"
-      : "en";
+    : supported.includes(stored)
+      ? stored
+      : browserLanguage.startsWith("pt")
+        ? "pt"
+        : "en";
 
-  const applyLanguage = (language, updateUrl) => {
+  const applyLanguage = (language, persist) => {
     current = supported.includes(language) ? language : "en";
     document.documentElement.lang = current === "pt" ? "pt-BR" : "en";
 
@@ -24,11 +48,13 @@
       );
     });
 
-    document.querySelectorAll("[data-title-pt][data-title-en]").forEach((element) => {
-      document.title = current === "pt" ? element.dataset.titlePt : element.dataset.titleEn;
-    });
+    const titles = document.querySelector("[data-title-pt][data-title-en]");
+    if (titles) {
+      document.title = current === "pt" ? titles.dataset.titlePt : titles.dataset.titleEn;
+    }
 
-    if (updateUrl) {
+    if (persist) {
+      writeStored(current);
       const next = new URL(window.location.href);
       next.searchParams.set("lang", current);
       window.history.replaceState({}, "", next);
@@ -46,4 +72,7 @@
   });
 
   applyLanguage(current, false);
+
+  // Remember a language that came in through the URL so the next page keeps it.
+  if (supported.includes(requested) && requested !== stored) writeStored(current);
 })();

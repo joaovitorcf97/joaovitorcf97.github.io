@@ -1,25 +1,61 @@
-# Site do Solitaire
+# Site da Super Apps
 
-Site estático utilizado como página do desenvolvedor, política de privacidade e suporte do Solitaire.
+Site estático que serve como página do desenvolvedor, política de privacidade e suporte
+dos jogos da Super Apps. Um jogo por pasta; a raiz é o hub que lista todos.
 
-## Endereços depois da publicação
+Publicado pelo repositório `joaovitorcf97.github.io`, ou seja, **na raiz do domínio**.
 
-- Site: `https://joaovitorcf97.github.io/solitaire-game/`
-- Política: `https://joaovitorcf97.github.io/solitaire-game/privacy/`
-- Suporte: `https://joaovitorcf97.github.io/solitaire-game/support/`
-- app-ads.txt preparado no projeto: `https://joaovitorcf97.github.io/solitaire-game/app-ads.txt`
+## Rotas
 
-## Publicação no GitHub Pages
+| Rota | Conteúdo |
+|---|---|
+| `/` | Hub com os dois jogos |
+| `/solitaire/` | Página do Solitaire |
+| `/solitaire/privacy/` | Política de privacidade do Solitaire |
+| `/solitaire/support/` | Suporte do Solitaire |
+| `/number-merge/` | Página do Number Merge |
+| `/number-merge/privacy/` | Política de privacidade do Number Merge |
+| `/number-merge/support/` | Suporte do Number Merge |
+| `/privacy/` · `/support/` | Redirecionam para as rotas do Solitaire (ver abaixo) |
 
-O workflow `.github/workflows/deploy-frontend-pages.yml` publica automaticamente o conteúdo desta pasta quando alterações chegam à branch `main`.
+URLs para as lojas:
 
-No GitHub, abra **Settings → Pages** e escolha **GitHub Actions** em **Build and deployment → Source**. Depois envie as alterações para a branch `main` ou execute o workflow manualmente pela aba **Actions**.
+- Solitaire: `https://joaovitorcf97.github.io/solitaire/privacy/`
+- Number Merge: `https://joaovitorcf97.github.io/number-merge/privacy/`
 
-## Observação importante sobre app-ads.txt
+### Por que `/privacy/` e `/support/` continuam existindo
 
-O AdMob normalmente procura o arquivo na raiz do domínio informado pela loja, por exemplo `https://joaovitorcf97.github.io/app-ads.txt`, ignorando o caminho `/solitaire-game/`. O arquivo está preparado nesta pasta, mas a verificação pode exigir uma destas opções:
+Eram as rotas do Solitaire quando o site tinha um jogo só, e `/privacy/` já foi
+cadastrada no Google Play Console. As duas viraram páginas de redirecionamento
+(`meta refresh` + `location.replace`) para as rotas novas, então nenhum link antigo
+quebra. Só remova essas pastas depois de trocar a URL no Play Console — e mesmo assim,
+manter custa quase nada.
 
-1. publicar o site em um domínio próprio e manter `app-ads.txt` na raiz; ou
-2. criar um repositório GitHub Pages de usuário chamado `joaovitorcf97.github.io` e publicar o arquivo na raiz dele.
+## Estrutura
 
-Para a URL da política de privacidade, o endereço dentro de `/solitaire-game/privacy/` funciona normalmente.
+```
+index.html                 hub
+styles.css                 base compartilhada + um tema por jogo
+site.js                    troca de idioma (PT/EN) e ano do rodapé
+assets/solitaire/          ícone, textura de feltro, og, feature graphic
+assets/number-merge/       ícone
+```
+
+Cada página escolhe o tema por uma classe no `<body>`: `theme-hub`, `theme-solitaire`
+ou `theme-number-merge`. As páginas de documento somam `inner-page`, que escurece o
+fundo. Nenhum `<style>` inline nas páginas — tema novo se resolve no `styles.css`.
+
+O texto é bilíngue no próprio HTML: `data-lang="en"` e `data-lang="pt"` em blocos
+paralelos, e o `site.js` esconde o que não é o idioma atual. O idioma escolhido fica
+no `localStorage`, então ele acompanha a navegação entre as páginas.
+
+## Publicação
+
+Push na branch `main` publica pelo GitHub Pages. Em **Settings → Pages**, a origem é
+**GitHub Actions** (ou *Deploy from a branch*, conforme a configuração do repositório).
+
+## app-ads.txt
+
+Como o site está na raiz do domínio, `https://joaovitorcf97.github.io/app-ads.txt`
+responde direto — que é exatamente onde o AdMob procura. Nada a fazer além de manter
+o arquivo na raiz do projeto.
